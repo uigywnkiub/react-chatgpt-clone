@@ -1,74 +1,79 @@
-import { useState, useEffect, useRef } from 'react'
-import { BiPlus, BiComment, BiUser, BiFace, BiSend } from 'react-icons/bi'
+import { useState, useEffect, useRef } from "react";
+import { BiPlus, BiComment, BiUser, BiFace, BiSend } from "react-icons/bi";
 
 function App() {
-  const [text, setText] = useState('')
-  const [message, setMessage] = useState(null)
-  const [previousChats, setPreviousChats] = useState([])
-  const [currentTitle, setCurrentTitle] = useState(null)
-  const [isResponseLoading, setIsResponseLoading] = useState(false)
-  const [isRateLimitError, setIsRateLimitError] = useState(false)
-  const scrollToLastItem = useRef(null)
+  const [text, setText] = useState("");
+  const [message, setMessage] = useState(null);
+  const [previousChats, setPreviousChats] = useState([]);
+  const [currentTitle, setCurrentTitle] = useState(null);
+  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const [errorText, setErrorText] = useState("");
+  const scrollToLastItem = useRef(null);
 
   const createNewChat = () => {
-    setMessage(null)
-    setText('')
-    setCurrentTitle(null)
-  }
+    setMessage(null);
+    setText("");
+    setCurrentTitle(null);
+  };
 
   const backToHistoryPrompt = (uniqueTitle) => {
-    setCurrentTitle(uniqueTitle)
-    setMessage(null)
-    setText('')
-  }
+    setCurrentTitle(uniqueTitle);
+    setMessage(null);
+    setText("");
+  };
 
   const submitHandler = async (e) => {
-    e.preventDefault()
-    if (!text) return
+    e.preventDefault();
+    if (!text) return;
+
+    setErrorText("");
+    setIsResponseLoading(true);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         message: text,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }
+    };
 
     try {
-      setIsResponseLoading(true)
-
-      const response = await fetch('http://localhost:8000/completions', options)
-      const data = await response.json()
+      const response = await fetch(
+        "http://localhost:8000/completions",
+        options
+      );
+      const data = await response.json();
 
       if (data.error) {
-        setIsRateLimitError(true)
+        setErrorText(data.error.message);
+        setText("");
       } else {
-        setIsRateLimitError(false)
+        setErrorText(false);
       }
 
       if (!data.error) {
-        setMessage(data.choices[0].message)
+        setMessage(data.choices[0].message);
         setTimeout(() => {
           scrollToLastItem.current?.lastElementChild?.scrollIntoView({
-            behavior: 'smooth',
-          })
-        }, 1)
+            behavior: "smooth",
+          });
+        }, 1);
         setTimeout(() => {
-          setText('')
-        }, 2)
+          setText("");
+        }, 2);
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
     } finally {
-      setIsResponseLoading(false)
+      setIsResponseLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (!currentTitle && text && message) {
-      setCurrentTitle(text)
+      setCurrentTitle(text);
     }
 
     if (currentTitle && text && message) {
@@ -76,7 +81,7 @@ function App() {
         ...prevChats,
         {
           title: currentTitle,
-          role: 'user',
+          role: "user",
           content: text,
         },
         {
@@ -85,16 +90,17 @@ function App() {
           content:
             message.content.charAt(0).toUpperCase() + message.content.slice(1),
         },
-      ])
+      ]);
     }
-  }, [message, currentTitle])
+  }, [message, currentTitle]);
 
   const currentChat = previousChats.filter(
     (prevChat) => prevChat.title === currentTitle
-  )
+  );
+
   const uniqueTitles = Array.from(
     new Set(previousChats.map((prevChat) => prevChat.title).reverse())
-  )
+  );
   return (
     <>
       <div className="container">
@@ -127,20 +133,31 @@ function App() {
         </section>
 
         <section className="main">
-          {!currentTitle && <h1>VolodymyrGPT</h1>}
+          {!currentTitle && (
+            <div className="empty-chat-container">
+              <img
+                src="../public/ChatGPT_logo.svg"
+                width={45}
+                height={45}
+                alt="chat gpt logo"
+              />
+              <h1>Chat GPT Clone</h1>
+              <h3>How can I help you today?</h3>
+            </div>
+          )}
           <div className="main-header">
             <ul>
               {currentChat?.map((chatMsg, idx) => (
                 <li key={idx} ref={scrollToLastItem}>
                   <img
                     src={
-                      chatMsg.role === 'user'
-                        ? '../public/face_logo.svg'
-                        : '../public/ChatGPT_logo.svg'
+                      chatMsg.role === "user"
+                        ? "../public/face_logo.svg"
+                        : "../public/ChatGPT_logo.svg"
                     }
-                    alt={chatMsg.role === 'user' ? 'Face icon' : 'ChatGPT icon'}
+                    alt={chatMsg.role === "user" ? "Face icon" : "ChatGPT icon"}
                     style={{
-                      backgroundColor: chatMsg.role === 'user' && '#ECECF1',
+                      backgroundColor: chatMsg.role === "user" && "#ECECF1",
                     }}
                   />
                   <p>{chatMsg.content}</p>
@@ -149,12 +166,7 @@ function App() {
             </ul>
           </div>
           <div className="main-bottom">
-            {isRateLimitError && (
-              <p>
-                Rate limit reached for default-gpt-3.5-turbo. Please try again
-                in 20s.
-              </p>
-            )}
+            {errorText && <p>{errorText}</p>}
             <form className="form-container" onSubmit={submitHandler}>
               <input
                 type="text"
@@ -162,7 +174,7 @@ function App() {
                 spellCheck="false"
                 value={
                   isResponseLoading
-                    ? 'Loading...'
+                    ? "Loading..."
                     : text.charAt(0).toUpperCase() + text.slice(1)
                 }
                 onChange={(e) => setText(e.target.value)}
@@ -170,19 +182,24 @@ function App() {
               />
               {!isResponseLoading && (
                 <button type="submit">
-                  <BiSend size={20} />
+                  <BiSend
+                    size={20}
+                    style={{
+                      fill: text.length > 0 && "#ECECF1",
+                    }}
+                  />
                 </button>
               )}
             </form>
             <p>
-              Free Research Preview. ChatGPT may produce inaccurate information
-              about people, places, or facts. ChatGPT May 3 Version
+              ChatGPT can make mistakes. Consider checking important
+              information.
             </p>
           </div>
         </section>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

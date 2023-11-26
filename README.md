@@ -16,11 +16,11 @@ Install dependencies.
 ```
 Start frontend server with vite.
 ```bash
-  npm run dev:frontend
+  npm run dev:front
 ```
 Start backend server with nodemon.
 ```bash
-  npm run dev:backend
+  npm run dev:back
 ```
 
 ## License
