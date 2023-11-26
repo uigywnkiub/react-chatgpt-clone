@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev:frontend": "vite",
-    "dev:backend": "nodemon server.mjs",
+    "dev:front": "vite",
+    "dev:back": "nodemon server.mjs",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
