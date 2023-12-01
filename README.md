@@ -13,16 +13,21 @@ The ChatGPT clone uses chat completion v1 API with the gpt-3.5-turbo model and e
 Clone the repository to your local machine, then create the `.env` file in the root directory of the project and create the `OPENAI_API_KEY` variable in it, and pass your private OpenAI key from your account at https://platform.openai.com
 
 Install dependencies.
+
 ```bash
   npm i
 ```
-Start frontend server with vite.
-```bash
-  npm run dev:front
-```
+
 Start backend server with nodemon.
+
 ```bash
   npm run dev:back
+```
+
+Start frontend server with vite.
+
+```bash
+  npm run dev:front
 ```
 
 ## License
