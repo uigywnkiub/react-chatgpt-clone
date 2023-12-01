@@ -109,7 +109,7 @@ button {
   height: 100vh;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .main h1 {
@@ -217,7 +217,7 @@ button {
 @media screen and (min-width:1280px) {
   .main-header li {
     margin: 1rem auto;
-    width: 745px;
+    width: 50rem;
   }
 }
 
