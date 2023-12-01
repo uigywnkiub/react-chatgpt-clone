@@ -166,7 +166,7 @@ function App() {
             </ul>
           </div>
           <div className="main-bottom">
-            {errorText && <p>{errorText}</p>}
+            {errorText && <p className="errorText">{errorText}</p>}
             <form className="form-container" onSubmit={submitHandler}>
               <input
                 type="text"
