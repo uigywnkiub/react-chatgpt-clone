@@ -4,9 +4,9 @@ The ChatGPT clone uses chat completion v1 API with the gpt-3.5-turbo-1106 model 
 
 ## Screenshots
 
-<img width="1421" alt="image" src="https://github.com/kas1qqqq/react-chatgpt-clone/assets/29861553/c6c19ab7-93ed-4282-a23a-74fb2cb39f97">
+<img width="1421" alt="image" src="https://github.com/uigywnkiub/react-chatgpt-clone/assets/29861553/c6c19ab7-93ed-4282-a23a-74fb2cb39f97">
 
-![App Screenshot](https://github.com/kas1qqqq/infinite-todos/assets/29861553/7589892e-c65b-4f97-8a24-5fe12465e771)
+![App Screenshot](https://github.com/uigywnkiub/infinite-todos/assets/29861553/7589892e-c65b-4f97-8a24-5fe12465e771)
 
 ## Installation
 
