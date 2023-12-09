@@ -16,7 +16,7 @@ app.post('/completions', async (req, res) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-3.5-turbo-1106',
+      model: process.env.GPT_MODEL_NAME,
       messages: [
         {
           role: 'user',
