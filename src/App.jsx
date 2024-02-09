@@ -42,7 +42,7 @@ function App() {
     try {
       const response = await fetch(
         "http://localhost:8000/api/completions",
-        options
+        options,
       );
       const data = await response.json();
 
@@ -94,11 +94,11 @@ function App() {
   }, [message, currentTitle]);
 
   const currentChat = previousChats.filter(
-    (prevChat) => prevChat.title === currentTitle
+    (prevChat) => prevChat.title === currentTitle,
   );
 
   const uniqueTitles = Array.from(
-    new Set(previousChats.map((prevChat) => prevChat.title).reverse())
+    new Set(previousChats.map((prevChat) => prevChat.title).reverse()),
   );
 
   return (
