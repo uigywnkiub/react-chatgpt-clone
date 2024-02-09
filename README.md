@@ -4,7 +4,7 @@ The ChatGPT clone uses chat completion v1 API with your gpt model and express.js
 
 ## Screenshots
 
-![App Screenshot](https://github.com/uigywnkiub/infinite-todos/assets/29861553/7589892e-c65b-4f97-8a24-5fe12465e771)
+![App Screenshot](https://github.com/uigywnkiub/react-chatgpt-clone/assets/29861553/1a5960f8-3c96-48b5-a1dd-48dfc49437bc)
 
 ## Installation
 
