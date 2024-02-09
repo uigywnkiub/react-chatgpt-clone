@@ -3,10 +3,12 @@
   "private": "false",
   "version": "1.0.0",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev:front": "vite",
     "dev:back": "nodemon api/index.js",
     "build": "vite build",
+    "start": "node api/index.js",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prettier": "prettier --c .",
