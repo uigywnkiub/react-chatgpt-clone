@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { BiPlus, BiComment, BiUser, BiFace, BiSend } from "react-icons/bi";
+import { BiPlus, BiUser, BiSend, BiSolidUserCircle } from "react-icons/bi";
 
 function App() {
   const [text, setText] = useState("");
@@ -42,7 +42,7 @@ function App() {
     try {
       const response = await fetch(
         "http://localhost:8000/completions",
-        options
+        options,
       );
       const data = await response.json();
 
@@ -87,20 +87,20 @@ function App() {
         {
           title: currentTitle,
           role: message.role,
-          content:
-            message.content.charAt(0).toUpperCase() + message.content.slice(1),
+          content: message.content,
         },
       ]);
     }
   }, [message, currentTitle]);
 
   const currentChat = previousChats.filter(
-    (prevChat) => prevChat.title === currentTitle
+    (prevChat) => prevChat.title === currentTitle,
   );
 
   const uniqueTitles = Array.from(
-    new Set(previousChats.map((prevChat) => prevChat.title).reverse())
+    new Set(previousChats.map((prevChat) => prevChat.title).reverse()),
   );
+
   return (
     <>
       <div className="container">
@@ -112,22 +112,40 @@ function App() {
           <div className="sidebar-history">
             {uniqueTitles.length > 0 && <p>Today</p>}
             <ul>
-              {uniqueTitles?.map((uniqueTitle, idx) => (
-                <li key={idx} onClick={() => backToHistoryPrompt(uniqueTitle)}>
-                  <BiComment />
-                  {uniqueTitle.slice(0, 18)}
-                </li>
-              ))}
+              {uniqueTitles?.map((uniqueTitle, idx) => {
+                const listItems = document.querySelectorAll("li");
+
+                listItems.forEach((item) => {
+                  if (item.scrollWidth > item.clientWidth) {
+                    item.classList.add("li-overflow-shadow");
+                  }
+                });
+
+                return (
+                  <li
+                    key={idx}
+                    onClick={() => backToHistoryPrompt(uniqueTitle)}
+                  >
+                    {uniqueTitle}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="sidebar-info">
             <div className="sidebar-info-upgrade">
-              <BiUser />
-              <p>Upgrade to Plus</p>
+              <BiUser size={20} />
+              <p>
+                Upgrade plan
+                <br />
+                <span className="sidebar-info-upgrade-subtext">
+                  Get GPT-4, DALL·E, and more
+                </span>
+              </p>
             </div>
             <div className="sidebar-info-user">
-              <BiFace />
-              <p>vgerun97@gmail.com</p>
+              <BiSolidUserCircle size={20} />
+              <p>User</p>
             </div>
           </div>
         </section>
@@ -136,10 +154,10 @@ function App() {
           {!currentTitle && (
             <div className="empty-chat-container">
               <img
-                src="../public/ChatGPT_logo.svg"
+                src="images/chatgpt-logo.svg"
                 width={45}
                 height={45}
-                alt="chat gpt logo"
+                alt="ChatGPT"
               />
               <h1>Chat GPT Clone</h1>
               <h3>How can I help you today?</h3>
@@ -147,22 +165,32 @@ function App() {
           )}
           <div className="main-header">
             <ul>
-              {currentChat?.map((chatMsg, idx) => (
-                <li key={idx} ref={scrollToLastItem}>
-                  <img
-                    src={
-                      chatMsg.role === "user"
-                        ? "../public/face_logo.svg"
-                        : "../public/ChatGPT_logo.svg"
-                    }
-                    alt={chatMsg.role === "user" ? "Face icon" : "ChatGPT icon"}
-                    style={{
-                      backgroundColor: chatMsg.role === "user" && "#ECECF1",
-                    }}
-                  />
-                  <p>{chatMsg.content}</p>
-                </li>
-              ))}
+              {currentChat?.map((chatMsg, idx) => {
+                const isUser = chatMsg.role === "user";
+
+                return (
+                  <li key={idx} ref={scrollToLastItem}>
+                    {isUser ? (
+                      <div>
+                        <BiSolidUserCircle size={28.8} />
+                      </div>
+                    ) : (
+                      <img src="images/chatgpt-logo.svg" alt="ChatGPT" />
+                    )}
+                    {isUser ? (
+                      <div>
+                        <p className="role-title">You</p>
+                        <p>{chatMsg.content}</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="role-title">ChatGPT</p>
+                        <p>{chatMsg.content}</p>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="main-bottom">
@@ -172,22 +200,13 @@ function App() {
                 type="text"
                 placeholder="Send a message."
                 spellCheck="false"
-                value={
-                  isResponseLoading
-                    ? "Loading..."
-                    : text.charAt(0).toUpperCase() + text.slice(1)
-                }
+                value={isResponseLoading ? "Processing..." : text}
                 onChange={(e) => setText(e.target.value)}
                 readOnly={isResponseLoading}
               />
               {!isResponseLoading && (
                 <button type="submit">
-                  <BiSend
-                    size={20}
-                    style={{
-                      fill: text.length > 0 && "#ECECF1",
-                    }}
-                  />
+                  <BiSend size={20} />
                 </button>
               )}
             </form>

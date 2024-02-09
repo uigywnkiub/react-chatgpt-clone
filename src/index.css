@@ -2,8 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: #ECECF1;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  color: #ececf1;
 }
 
 ul {
@@ -47,7 +58,7 @@ button {
 }
 
 .sidebar-header:hover {
-  background-color: #2B2C2F;
+  background-color: #2b2c2f;
 }
 
 .sidebar-history {
@@ -61,18 +72,35 @@ button {
   top: 0;
   background-color: rgb(32, 33, 35);
   padding: 0.4rem;
-  color: #8E8FA1;
+  color: #8e8fa1;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .sidebar li {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
+  position: relative;
   overflow: hidden;
-  gap: 0.5rem;
+  text-overflow: ellipsis;
   padding: 0.5rem;
+  white-space: nowrap;
+}
+
+.sidebar .li-overflow-shadow:not(:hover)::after {
+  content: "‎";
+  position: absolute;
+  bottom: 0.5rem;
+  right: -5px;
+  padding: 0 5px;
+  left: calc(100% - 50px);
+  border-radius: 0.3rem;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    #202123 100%,
+    rgba(0, 0, 0, 0)
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .sidebar-info {
@@ -89,18 +117,17 @@ button {
   padding: 0.5rem;
 }
 
+.sidebar-info-upgrade-subtext {
+  font-size: 0.75rem;
+  color: #8e8fa1;
+}
+
 .sidebar li:hover,
 .sidebar-info-upgrade:hover,
 .sidebar-info-user:hover {
   background-color: #343541;
   border-radius: 0.3rem;
   cursor: pointer;
-}
-
-.sidebar li:active,
-.sidebar-info-upgrade:active,
-.sidebar-info-user:active {
-  background-color: #343541;
 }
 
 .main {
@@ -128,7 +155,7 @@ button {
 .main-header li {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   background-color: rgb(68, 70, 85);
   padding: 1rem;
   margin: 1rem 0;
@@ -150,6 +177,12 @@ button {
   height: 1.8rem;
 }
 
+.role-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
 .main-bottom {
   display: flex;
   flex-direction: column;
@@ -163,7 +196,7 @@ button {
 .main-bottom p {
   font-size: 0.8rem;
   text-align: center;
-  color: #C3C3D1;
+  color: #c3c3d1;
 }
 
 .empty-chat-container {
@@ -189,7 +222,8 @@ button {
   display: flex;
   align-items: center;
   background-color: #404150;
-  box-shadow: rgb(0, 0, 0, 0.05) 0 3.3rem 3.4rem,
+  box-shadow:
+    rgb(0, 0, 0, 0.05) 0 3.3rem 3.4rem,
     rgb(0, 0, 0, 0.05) 0 -0.7rem 1.8rem,
     rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem,
     rgb(0, 0, 0, 0.05) 0 0.7rem 0.2rem,
@@ -207,37 +241,41 @@ button {
 }
 
 .form-container input::placeholder {
-  color: #8E8FA1;
+  color: #8e8fa1;
 }
 
 .form-container svg {
-  fill: #5F6070;
+  fill: #8e8fa1;
   transform: rotate(-45deg);
 }
 
 .form-container svg:hover {
-  fill: #8E8FA1;
+  fill: #ececf1;
 }
 
-@media screen and (min-width:1280px) {
+@media screen and (min-width: 1280px) {
   .main-header li {
     margin: 1rem auto;
     width: 50rem;
   }
 }
 
-@media screen and (max-width:1080px) {
+@media screen and (max-width: 1080px) {
   .form-container {
     width: auto;
   }
 }
 
-@media screen and (max-width:640px) {
+@media screen and (max-width: 640px) {
   .sidebar {
     display: none;
   }
 
   .container {
     display: block;
+  }
+
+  .main-header li {
+    gap: 1rem;
   }
 }
