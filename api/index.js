@@ -31,10 +31,19 @@ app.post("/api/completions", async (req, res) => {
       options
     );
     const data = await response.json();
+    res.setHeader("Content-Type", "text/html");
+    res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
     res.send(data);
   } catch (e) {
     console.error(e);
   }
+});
+
+app.get("/api/test", (req, res) => {
+  const path = `/api/item/${Math.random() + ""}`;
+  res.setHeader("Content-Type", "text/html");
+  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
+  res.end(`Hello! Go to item: <a href="${path}">${path}</a>`);
 });
 
 app.listen(PORT, () => {
