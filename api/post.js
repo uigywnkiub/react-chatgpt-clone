@@ -24,7 +24,7 @@ export async function POST(req, res) {
     );
     const data = await response.json();
     // return new Response(JSON.stringify(data));
-    return new Response(JSON.stringify(reqBody));
+    return new Response(JSON.stringify(1221));
     // return data
     // return res.send(data);
   } catch (e) {
