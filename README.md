@@ -8,7 +8,7 @@ The ChatGPT clone uses chat completion v1 API with your gpt model and express.js
 
 ## Installation
 
-Clone the repository to your local machine, then create the `.env` file in the root directory of the project and create two variable in it, `OPENAI_API_KEY` and `GPT_MODEL_NAME` with your data. You can get your necessary data at https://platform.openai.com/api-keys
+Copy all variables from `.env.example` to new created `.env` file and change the appropriate variables with your values. You can get your necessary data at [Platform OpenAI](https://platform.openai.com/api-keys)
 
 Install dependencies.
 
