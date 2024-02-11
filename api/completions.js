@@ -5,7 +5,7 @@ const redis = Redis.fromEnv();
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "3 s"),
+  limiter: Ratelimit.slidingWindow(2, "5 s"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   try {
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    const { success } = await ratelimit.blockUntilReady(ip, 3_000);
+    const { success } = await ratelimit.blockUntilReady("completions", 5_000);
 
     if (!success) {
       return res.status(429).json({
