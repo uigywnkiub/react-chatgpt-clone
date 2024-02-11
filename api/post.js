@@ -1,4 +1,8 @@
 export default async function handler(req, res) {
+  console.log("🚀  res:", res);
+
+  console.log("🚀  req:", req);
+
   const { body } = req;
   return res.send(`Hello ${body.name}, you just parsed the request body!`);
 }
