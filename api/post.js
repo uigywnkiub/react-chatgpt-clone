@@ -11,7 +11,7 @@ export async function POST(req, res) {
       messages: [
         {
           role: "user",
-          content: req.body.message,
+          content: req.body.message || "test resp",
         },
       ],
     }),
@@ -25,7 +25,7 @@ export async function POST(req, res) {
     res.setHeader("Access-Control-Allow-Credentials", `true`);
     res.setHeader("Access-Control-Allow-Origin", "*");
     // return new Response(JSON.stringify(data));
-    return Response(data)
+    return Response(JSON.stringify(data))
     // return data
     // return res.send(data);
   } catch (e) {
