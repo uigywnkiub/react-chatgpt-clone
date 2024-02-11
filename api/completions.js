@@ -41,10 +41,6 @@ export default async function handler(req, res) {
       return res.status(429).json({
         error: "Too many requests from this IP, please try again later.",
       });
-    } else {
-      return res.status(429).json({
-        error: "Too mdsadasadsany requests from this IP, please try again later.",
-      });
     }
 
     // const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
