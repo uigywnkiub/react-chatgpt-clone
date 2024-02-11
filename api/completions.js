@@ -5,7 +5,7 @@ const redis = Redis.fromEnv();
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.fixedWindow(5, "5s"),
+  limiter: Ratelimit.fixedWindow(1, "5 s"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
