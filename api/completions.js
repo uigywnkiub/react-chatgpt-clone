@@ -27,21 +27,21 @@ export default async function handler(req, res) {
     const ip =
       req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    // const allowed = await ratelimit.limit("functionLimit", ip);
+    const allowed = await ratelimit.limit("functionLimit", ip);
 
-    // if (!allowed) {
-    //   return res.status(429).json({
-    //     error: "Too many requests from this IP, please try again later.",
-    //   });
-    // }
-
-    const { success } = await ratelimit.limit(ip);
-
-    if (!success) {
+    if (!allowed) {
       return res.status(429).json({
         error: "Too many requests from this IP, please try again later.",
       });
     }
+
+    // const { success } = await ratelimit.limit(ip);
+
+    // if (!success) {
+    //   return res.status(429).json({
+    //     error: "Too many requests from this IP, please try again later.",
+    //   });
+    // }
 
     // const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     // await redis.incr(ip);
