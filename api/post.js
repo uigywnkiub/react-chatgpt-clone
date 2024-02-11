@@ -22,8 +22,8 @@ export async function POST(req, res) {
       options
     );
     const data = await response.json();
-    // return new Response(JSON.stringify(data));
-    res.send(data);
+    return new Response(JSON.stringify(data));
+    // res.send(data);
   } catch (e) {
     console.error(e);
   }
