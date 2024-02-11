@@ -5,7 +5,7 @@ const redis = Redis.fromEnv();
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "10 s"),
+  limiter: Ratelimit.slidingWindow(3, "3 s"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -17,29 +17,27 @@ const ratelimit = new Ratelimit({
 
 export default async function handler(req, res) {
   try {
-    // const { success } = await ratelimit.blockUntilReady("id", 10_000);
-
-    // if (!success) {
-    //   return res.status(429).send("Too many requests");
-    // }
-
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    // Increment request count for this IP address in Redis
-    await redis.incr(ip);
+    const { success } = await ratelimit.blockUntilReady(ip, 3_000);
 
-    // Get current request count for this IP address
-    const requestCount = await redis.get(ip);
-
-    // Check if the request count exceeds the limit
-    const maxRequestsPerWindow = 5;
-    if (parseInt(requestCount, 10) > maxRequestsPerWindow) {
-      return res
-        .status(429)
-        .json({
-          error: "Too many requests from this IP, please try again later.",
-        });
+    if (!success) {
+      return res.status(429).json({
+        error: "Too many requests from this IP, please try again later.",
+      });
     }
+
+    // const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    // await redis.incr(ip);
+    // const requestCount = await redis.get(ip);
+    // const maxRequestsPerWindow = 5;
+    // if (parseInt(requestCount, 10) > maxRequestsPerWindow) {
+    //   return res
+    //     .status(429)
+    //     .json({
+    //       error: "Too many requests from this IP, please try again later.",
+    //     });
+    // }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
