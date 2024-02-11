@@ -26,7 +26,6 @@ function App() {
     e.preventDefault();
     if (!text) return;
 
-    setErrorText("");
     setIsResponseLoading(true);
 
     const options = {
@@ -46,9 +45,7 @@ function App() {
       );
 
       if (response.status === 429) {
-        return setErrorText(
-          "You have reached the maximum number of requests per minute."
-        );
+        return setErrorText("Too many requests, please try again later.");
       }
 
       const data = await response.json();
@@ -61,6 +58,7 @@ function App() {
       }
 
       if (!data.error) {
+        setErrorText("");
         setMessage(data.choices[0].message);
         setTimeout(() => {
           scrollToLastItem.current?.lastElementChild?.scrollIntoView({
