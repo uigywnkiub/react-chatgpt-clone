@@ -8,7 +8,7 @@ The ChatGPT clone uses chat completion v1 API with your gpt model and express.js
 
 ## Installation
 
-Copy all variables from `.env.example` to new created `.env` file and change the appropriate variables with your values. You can get your necessary data at [Platform OpenAI](https://platform.openai.com/api-keys)
+Copy all variables from `.env.example` to new created `.env` file and change the appropriate variables with your values. You can get all necessary data at [Platform OpenAI](https://platform.openai.com/api-keys).
 
 Install dependencies.
 
