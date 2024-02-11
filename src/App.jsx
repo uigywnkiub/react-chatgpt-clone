@@ -44,6 +44,13 @@ function App() {
         `${import.meta.env.VITE_API_URL}/api/completions`,
         options
       );
+
+      if (response.status === 429) {
+        return setErrorText(
+          "You have reached the maximum number of requests per minute."
+        );
+      }
+
       const data = await response.json();
 
       if (data.error) {

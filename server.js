@@ -31,7 +31,7 @@ app.post("/api/completions", limiter, async (req, res) => {
       ],
     }),
   };
-  
+
   try {
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions",
@@ -42,7 +42,7 @@ app.post("/api/completions", limiter, async (req, res) => {
     res.send(data);
   } catch (e) {
     console.error(e);
-    res.status(500).send(e);
+    res.status(500).send(e.message);
   }
 });
 

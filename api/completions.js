@@ -21,9 +21,9 @@ export default async function handler(req, res) {
     const { success } = await ratelimit.limit(ip);
 
     if (!success) {
-      return res.status(429).send({
-        message: "Too many requests from this IP, please try again later.",
-      });
+      return res
+        .status(429)
+        .send("You have reached the maximum number of requests per hour.");
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
