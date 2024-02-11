@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const { success } = await ratelimit.limit(ip);
 
     if (!success) {
-      return res.status(429).json({
+      return res.status(429).send({
         message: "Too many requests from this IP, please try again later.",
       });
     }
