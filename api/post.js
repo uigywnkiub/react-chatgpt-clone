@@ -1,9 +1,9 @@
 export async function POST(req, res) {
   const { body: reqBody } = req;
-  if(reqBody.message === "test") {
-    return new Response("test");
+  if (reqBody.message === "test") {
+    return new Response(JSON.stringify(reqBody));
   }
-  
+
   // return new Response(`Hello from ${process.env.VERCEL_REGION}, ${req} | ${res}`);
   const options = {
     method: "POST",
