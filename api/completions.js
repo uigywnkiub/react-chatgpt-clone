@@ -1,11 +1,9 @@
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 
-const redis = Redis.fromEnv();
-
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.fixedWindow(1, "5 s"),
+  limiter: Ratelimit.slidingWindow(3, "1 h"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -13,13 +11,6 @@ const ratelimit = new Ratelimit({
    * "@upstash/ratelimit"
    */
   prefix: "@upstash/ratelimit",
-  // rateLimiters: {
-  //   // Limit requests to this function to 5 per minute
-  //   functionLimit: {
-  //     window: "1m",
-  //     limit: 5,
-  //   },
-  // },
 });
 
 export default async function handler(req, res) {
@@ -27,33 +18,13 @@ export default async function handler(req, res) {
     const ip =
       req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    // const allowed = await ratelimit.limit("functionLimit", ip);
-
-    // if (!allowed) {
-    //   return res.status(429).json({
-    //     error: "Too many requests from this IP, please try again later.",
-    //   });
-    // }
-
     const { success } = await ratelimit.limit(ip);
 
     if (!success) {
       return res.status(429).json({
-        error: "Too many requests from this IP, please try again later.",
+        message: "Too many requests from this IP, please try again later.",
       });
     }
-
-    // const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    // await redis.incr(ip);
-    // const requestCount = await redis.get(ip);
-    // const maxRequestsPerWindow = 5;
-    // if (parseInt(requestCount, 10) > maxRequestsPerWindow) {
-    //   return res
-    //     .status(429)
-    //     .json({
-    //       error: "Too many requests from this IP, please try again later.",
-    //     });
-    // }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
