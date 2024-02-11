@@ -31,9 +31,12 @@ function App() {
 
     const options = {
       method: "POST",
-      body: JSON.stringify({
+      // body: JSON.stringify({
+      //   message: text,
+      // }),
+      body: {
         message: text,
-      }),
+      },
       headers: {
         "Content-Type": "application/json",
       },
