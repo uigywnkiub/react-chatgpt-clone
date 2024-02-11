@@ -8,6 +8,7 @@
     "dev:back": "nodemon api/index.js",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "vercel-build": "node api/index.js",
     "preview": "vite preview",
     "prettier": "prettier --c .",
     "prettier:fix": "prettier --w ."
