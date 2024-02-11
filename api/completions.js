@@ -5,7 +5,7 @@ const redis = Redis.fromEnv();
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(2, "5 s"),
+  limiter: Ratelimit.slidingWindow(5, "5 s"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -13,13 +13,29 @@ const ratelimit = new Ratelimit({
    * "@upstash/ratelimit"
    */
   prefix: "@upstash/ratelimit",
+  rateLimiters: {
+    // Limit requests to this function to 5 per minute
+    functionLimit: {
+      window: "1m",
+      limit: 5,
+    },
+  },
 });
 
 export default async function handler(req, res) {
   try {
-    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    const ip =
+      req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    const { success } = await ratelimit.blockUntilReady("completions", 5_000);
+    // const allowed = await ratelimit.limit("functionLimit", ip);
+
+    // if (!allowed) {
+    //   return res.status(429).json({
+    //     error: "Too many requests from this IP, please try again later.",
+    //   });
+    // }
+
+    const { success } = await ratelimit.limit(ip);
 
     if (!success) {
       return res.status(429).json({
