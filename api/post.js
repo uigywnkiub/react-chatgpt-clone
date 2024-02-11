@@ -24,8 +24,7 @@ export async function POST(req, res) {
     const data = await response.json();
     res.setHeader("Access-Control-Allow-Credentials", `true`);
     res.setHeader("Access-Control-Allow-Origin", "*");
-    // return new Response(JSON.stringify(data));
-    return Response(JSON.stringify(data))
+    return new Response(JSON.stringify(data));
     // return data
     // return res.send(data);
   } catch (e) {
