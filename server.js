@@ -3,6 +3,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 dotenv.config();
+import { kv } from "@vercel/kv";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,9 @@ const limiter = rateLimit({
 });
 
 app.post("/api/completions", limiter, async (req, res) => {
+  const user = await kv.hgetall('user:me');
+  console.log("🚀  user:", user);
+
   const options = {
     method: "POST",
     headers: {
