@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
-  const { body } = req;
-  return res.send(`Hello ${body.name}, you just parsed the request body!`);
+  // const { body } = req;
+  return res.send(`Hello ${req.body.message}, you just parsed the request body!`);
 }
 
 export async function POST(req, res) {
