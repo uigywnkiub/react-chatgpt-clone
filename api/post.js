@@ -22,7 +22,7 @@ export async function POST(req, res) {
       "https://api.openai.com/v1/chat/completions",
       options
     );
-    const data = await response.json();
+     const data = await response.json();
     return new Response(JSON.stringify(data));
     // res.send(data);
   } catch (e) {
