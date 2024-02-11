@@ -13,15 +13,15 @@ export const config = {
   matcher: '/completions',
 }
 
-export default async function middleware(request) {
-  // You could alternatively limit based on user ID or similar
-  const ip = ipAddress(request) || '127.0.0.1'
-  const { success, pending, limit, reset, remaining } = await ratelimit.limit(
-    ip
-  )
+// export default async function middleware(request) {
+//   // You could alternatively limit based on user ID or similar
+//   const ip = ipAddress(request) || '127.0.0.1'
+//   const { success, pending, limit, reset, remaining } = await ratelimit.limit(
+//     ip
+//   )
 
-  return success ? next() : Response.redirect(new URL('/blocked.html', request.url))
-}
+//   return success ? next() : Response.redirect(new URL('/blocked.html', request.url))
+// }
 
 export default async function handler(req, res) {
   const ip = ipAddress(request) || '127.0.0.1'
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     });
 
     
-    return success ? next() : Response.redirect(new URL('/blocked.html', request.url))
+    // return success ? res.send(await response.json()) : Response.redirect(new URL('/blocked.html', request.url))
     return res.send(await response.json());
   } catch (error) {
     return res.status(500).send(error.message || error.toString());
