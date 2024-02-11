@@ -1,4 +1,5 @@
 export async function POST(req, res) {
+  const { body: reqBody } = req;
   // return new Response(`Hello from ${process.env.VERCEL_REGION}, ${req} | ${res}`);
   const options = {
     method: "POST",
@@ -22,9 +23,8 @@ export async function POST(req, res) {
       options
     );
     const data = await response.json();
-    // res.setHeader("Access-Control-Allow-Credentials", `true`);
-    // res.setHeader("Access-Control-Allow-Origin", "*");
-    return new Response(JSON.stringify(data));
+    // return new Response(JSON.stringify(data));
+    return new Response(JSON.stringify(reqBody));
     // return data
     // return res.send(data);
   } catch (e) {
