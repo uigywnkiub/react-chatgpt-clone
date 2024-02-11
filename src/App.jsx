@@ -41,7 +41,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/completions`,
+        `${import.meta.env.VITE_API_URL}/api/completion`,
         options,
       );
       const data = await response.json();
