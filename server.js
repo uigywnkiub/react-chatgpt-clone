@@ -3,12 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-const PORT = 8000;
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post("/api/completions", async (req, res) => {
+app.post("/completions", async (req, res) => {
   const options = {
     method: "POST",
     headers: {
@@ -31,16 +30,16 @@ app.post("/api/completions", async (req, res) => {
       options,
     );
     const data = await response.json();
+
     res.send(data);
   } catch (e) {
     console.error(e);
+    res.status(500).send(e);
   }
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(
-    `Server API is running on http://localhost:${PORT}/api/completions`,
+    `Server is running on http://localhost:${process.env.PORT}/completions`,
   );
 });
-
-export default app;
