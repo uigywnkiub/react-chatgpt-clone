@@ -22,10 +22,11 @@ export async function POST(req, res) {
       options
     );
     const data = await response.json();
-    // res.setHeader("Access-Control-Allow-Credentials", `true`);
-    // res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", `true`);
+    res.setHeader("Access-Control-Allow-Origin", "*");
     // return new Response(JSON.stringify(data));
-    return data
+    return Response(data)
+    // return data
     // return res.send(data);
   } catch (e) {
     console.error(e);
