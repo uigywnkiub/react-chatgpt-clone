@@ -1,6 +1,31 @@
+// export default async function handler(req, res) {
+//   // const { body } = req;
+//   return res.send(`Hello ${req.body.message}, you just parsed the request body!`);
+// }
 export default async function handler(req, res) {
-  // const { body } = req;
-  return res.send(`Hello ${req.body.message}, you just parsed the request body!`);
+  const msg = req.body.message;
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: process.env.GPT_MODEL_NAME,
+      messages: [
+        {
+          role: "user",
+          content: msg,
+        },
+      ],
+    }),
+  });
+  
+  return res.send(await response.json());
+
+  // return res.send(
+  //   `Hello ${req.body.message}, you just parsed the request body!`
+  // );
 }
 
 export async function POST(req, res) {
