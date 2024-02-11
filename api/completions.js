@@ -13,13 +13,13 @@ const ratelimit = new Ratelimit({
    * "@upstash/ratelimit"
    */
   prefix: "@upstash/ratelimit",
-  rateLimiters: {
-    // Limit requests to this function to 5 per minute
-    functionLimit: {
-      window: "1m",
-      limit: 5,
-    },
-  },
+  // rateLimiters: {
+  //   // Limit requests to this function to 5 per minute
+  //   functionLimit: {
+  //     window: "1m",
+  //     limit: 5,
+  //   },
+  // },
 });
 
 export default async function handler(req, res) {
@@ -27,21 +27,25 @@ export default async function handler(req, res) {
     const ip =
       req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    const allowed = await ratelimit.limit("functionLimit", ip);
+    // const allowed = await ratelimit.limit("functionLimit", ip);
 
-    if (!allowed) {
-      return res.status(429).json({
-        error: "Too many requests from this IP, please try again later.",
-      });
-    }
-
-    // const { success } = await ratelimit.limit(ip);
-
-    // if (!success) {
+    // if (!allowed) {
     //   return res.status(429).json({
     //     error: "Too many requests from this IP, please try again later.",
     //   });
     // }
+
+    const { success } = await ratelimit.limit("api");
+
+    if (!success) {
+      return res.status(429).json({
+        error: "Too many requests from this IP, please try again later.",
+      });
+    } else {
+      return res.status(429).json({
+        error: "Too mdsadasadsany requests from this IP, please try again later.",
+      });
+    }
 
     // const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     // await redis.incr(ip);
