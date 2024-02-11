@@ -41,7 +41,8 @@ function App() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/completions",
+        // "http://localhost:8000/api/completions",
+        "https://react-chatgpt-clone-eight.vercel.app/api/post",
         options,
       );
       const data = await response.json();
