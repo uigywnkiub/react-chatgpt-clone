@@ -42,7 +42,7 @@ function App() {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/completions`,
-        options,
+        options
       );
       const data = await response.json();
 
@@ -65,6 +65,7 @@ function App() {
         }, 2);
       }
     } catch (e) {
+      setErrorText(e.message);
       console.error(e);
     } finally {
       setIsResponseLoading(false);
@@ -94,11 +95,11 @@ function App() {
   }, [message, currentTitle]);
 
   const currentChat = previousChats.filter(
-    (prevChat) => prevChat.title === currentTitle,
+    (prevChat) => prevChat.title === currentTitle
   );
 
   const uniqueTitles = Array.from(
-    new Set(previousChats.map((prevChat) => prevChat.title).reverse()),
+    new Set(previousChats.map((prevChat) => prevChat.title).reverse())
   );
 
   return (

@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -7,7 +8,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post("/api/completions", async (req, res) => {
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 3, // limit each IP to 100 requests per minute defined in windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+
+app.post("/api/completions", limiter, async (req, res) => {
   const options = {
     method: "POST",
     headers: {
@@ -27,7 +34,7 @@ app.post("/api/completions", async (req, res) => {
   try {
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions",
-      options,
+      options
     );
     const data = await response.json();
 
@@ -40,6 +47,6 @@ app.post("/api/completions", async (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(
-    `Server is running on http://localhost:${process.env.PORT}/completions`,
+    `Server is running on http://localhost:${process.env.PORT}/completions`
   );
 });
