@@ -1,5 +1,9 @@
 export async function POST(req, res) {
   const { body: reqBody } = req;
+  if(reqBody.message === "test") {
+    return new Response("test");
+  }
+  
   // return new Response(`Hello from ${process.env.VERCEL_REGION}, ${req} | ${res}`);
   const options = {
     method: "POST",
@@ -24,7 +28,7 @@ export async function POST(req, res) {
     );
     const data = await response.json();
     // return new Response(JSON.stringify(data));
-    return new Response(JSON.stringify(1221));
+    return new Response(JSON.stringify(req.body));
     // return data
     // return res.send(data);
   } catch (e) {
