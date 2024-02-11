@@ -13,8 +13,7 @@
     "prettier:fix": "prettier --w ."
   },
   "dependencies": {
-    "@upstash/ratelimit": "^1.0.1",
-    "@vercel/kv": "^1.0.1",
+    "@upstash/redis": "^1.28.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.2",
     "express": "^4.18.2",
