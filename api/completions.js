@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     const requestCount = await redis.get(ip);
 
     // Check if the request count exceeds the limit
-    const maxRequestsPerWindow = 100;
+    const maxRequestsPerWindow = 5;
     if (parseInt(requestCount, 10) > maxRequestsPerWindow) {
       return res
         .status(429)
