@@ -1,6 +1,8 @@
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 
+const redis = Redis.fromEnv();
+
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(3, "10 s"),
@@ -15,10 +17,28 @@ const ratelimit = new Ratelimit({
 
 export default async function handler(req, res) {
   try {
-    const { success } = await ratelimit.blockUntilReady("id", 10_000);
+    // const { success } = await ratelimit.blockUntilReady("id", 10_000);
 
-    if (!success) {
-      return res.status(429).send("Too many requests");
+    // if (!success) {
+    //   return res.status(429).send("Too many requests");
+    // }
+
+    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    // Increment request count for this IP address in Redis
+    await redis.incr(ip);
+
+    // Get current request count for this IP address
+    const requestCount = await redis.get(ip);
+
+    // Check if the request count exceeds the limit
+    const maxRequestsPerWindow = 100;
+    if (parseInt(requestCount, 10) > maxRequestsPerWindow) {
+      return res
+        .status(429)
+        .json({
+          error: "Too many requests from this IP, please try again later.",
+        });
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
