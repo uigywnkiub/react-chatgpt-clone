@@ -37,7 +37,8 @@ button {
 .burger {
   position: absolute;
   top: 50%;
-  left: -6px;
+  left: 0;
+  transform: translate(-20%, -50%);
   fill: #ececf1;
   cursor: pointer;
 }
