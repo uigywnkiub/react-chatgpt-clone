@@ -38,7 +38,7 @@ button {
   position: absolute;
   top: 50%;
   left: 0;
-  transform: translate(-20%, -50%);
+  transform: translate(-25%, -50%);
   fill: #ececf1;
   cursor: pointer;
 }
@@ -93,6 +93,7 @@ button {
   color: #8e8fa1;
   font-size: 0.8rem;
   font-weight: 600;
+  z-index: 1;
 }
 
 .sidebar li {
@@ -142,6 +143,18 @@ button {
 .sidebar-info-upgrade:hover,
 .sidebar-info-user:hover {
   background-color: #343541;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.sidebar-info-upgrade:hover,
+.sidebar-info-user:hover {
+  cursor: not-allowed;
+}
+
+.clear-previous-btn {
+  background-color: rgba(185, 28, 28, 0.7);
+  padding: 0.1rem 0.2rem;
   border-radius: 0.3rem;
   cursor: pointer;
 }

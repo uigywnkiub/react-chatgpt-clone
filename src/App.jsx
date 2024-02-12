@@ -12,6 +12,7 @@ function App() {
   const [text, setText] = useState("");
   const [message, setMessage] = useState(null);
   const [previousChats, setPreviousChats] = useState([]);
+  const [localChats, setLocalChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState(null);
   const [isResponseLoading, setIsResponseLoading] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -103,34 +104,50 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const storedChats = localStorage.getItem("previousChats");
+
+    if (storedChats) {
+      setLocalChats(JSON.parse(storedChats));
+    }
+  }, []);
+
+  useEffect(() => {
     if (!currentTitle && text && message) {
       setCurrentTitle(text);
     }
 
     if (currentTitle && text && message) {
-      setPreviousChats((prevChats) => [
-        ...prevChats,
-        {
-          title: currentTitle,
-          role: "user",
-          content: text,
-        },
-        {
-          title: currentTitle,
-          role: message.role,
-          content: message.content,
-        },
-      ]);
+      const newChat = {
+        title: currentTitle,
+        role: "user",
+        content: text,
+      };
+
+      const responseMessage = {
+        title: currentTitle,
+        role: message.role,
+        content: message.content,
+      };
+
+      setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);
+      setLocalChats((prevChats) => [...prevChats, newChat, responseMessage]);
+
+      const updatedChats = [...localChats, newChat, responseMessage];
+      localStorage.setItem("previousChats", JSON.stringify(updatedChats));
     }
   }, [message, currentTitle]);
 
-  const currentChat = previousChats.filter(
+  const currentChat = (localChats || previousChats).filter(
     (prevChat) => prevChat.title === currentTitle
   );
 
   const uniqueTitles = Array.from(
     new Set(previousChats.map((prevChat) => prevChat.title).reverse())
   );
+
+  const localUniqueTitles = Array.from(
+    new Set(localChats.map((prevChat) => prevChat.title).reverse())
+  ).filter((title) => !uniqueTitles.includes(title));
 
   return (
     <>
@@ -141,27 +158,65 @@ function App() {
             <button>New Chat</button>
           </div>
           <div className="sidebar-history">
-            {uniqueTitles.length > 0 && <p>Today</p>}
-            <ul>
-              {uniqueTitles?.map((uniqueTitle, idx) => {
-                const listItems = document.querySelectorAll("li");
+            {uniqueTitles.length > 0 && previousChats.length !== 0 && (
+              <>
+                <p>Ongoing</p>
+                <ul>
+                  {uniqueTitles?.map((uniqueTitle, idx) => {
+                    const listItems = document.querySelectorAll("li");
 
-                listItems.forEach((item) => {
-                  if (item.scrollWidth > item.clientWidth) {
-                    item.classList.add("li-overflow-shadow");
-                  }
-                });
+                    listItems.forEach((item) => {
+                      if (item.scrollWidth > item.clientWidth) {
+                        item.classList.add("li-overflow-shadow");
+                      }
+                    });
 
-                return (
-                  <li
-                    key={idx}
-                    onClick={() => backToHistoryPrompt(uniqueTitle)}
+                    return (
+                      <li
+                        key={idx}
+                        onClick={() => backToHistoryPrompt(uniqueTitle)}
+                      >
+                        {uniqueTitle}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+            {localUniqueTitles.length > 0 && localChats.length !== 0 && (
+              <>
+                <p>
+                  Previous
+                  <br />
+                  <sub
+                    className="clear-previous-btn"
+                    onClick={() => localStorage.clear()}
                   >
-                    {uniqueTitle}
-                  </li>
-                );
-              })}
-            </ul>
+                    Clear
+                  </sub>
+                </p>
+                <ul>
+                  {localUniqueTitles?.map((uniqueTitle, idx) => {
+                    const listItems = document.querySelectorAll("li");
+
+                    listItems.forEach((item) => {
+                      if (item.scrollWidth > item.clientWidth) {
+                        item.classList.add("li-overflow-shadow");
+                      }
+                    });
+
+                    return (
+                      <li
+                        key={idx}
+                        onClick={() => backToHistoryPrompt(uniqueTitle)}
+                      >
+                        {uniqueTitle}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
           </div>
           <div className="sidebar-info">
             <div className="sidebar-info-upgrade">
