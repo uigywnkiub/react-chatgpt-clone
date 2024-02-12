@@ -112,10 +112,12 @@ button {
   padding: 0 5px;
   left: calc(100% - 50px);
   border-radius: 0.3rem;
-  background: linear-gradient(to right,
-      rgba(0, 0, 0, 0),
-      #202123 100%,
-      rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    #202123 100%,
+    rgba(0, 0, 0, 0)
+  );
   pointer-events: none;
   z-index: 1;
 }

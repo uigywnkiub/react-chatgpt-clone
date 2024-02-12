@@ -35,7 +35,7 @@ app.post("/api/completions", limiter, async (req, res) => {
   try {
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions",
-      options
+      options,
     );
     const data = await response.json();
 
@@ -48,6 +48,6 @@ app.post("/api/completions", limiter, async (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(
-    `Server is running on http://localhost:${process.env.PORT}/completions`
+    `Server is running on http://localhost:${process.env.PORT}/completions`,
   );
 });
