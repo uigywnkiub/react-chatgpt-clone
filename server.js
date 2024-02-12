@@ -10,7 +10,7 @@ app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 3, // limit each IP to 100 requests per minute defined in windowMs
+  max: 10, // limit each IP to 100 requests per minute defined in windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 

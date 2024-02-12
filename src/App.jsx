@@ -1,5 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { BiPlus, BiUser, BiSend, BiSolidUserCircle } from "react-icons/bi";
+import { MdOutlineArrowLeft, MdOutlineArrowRight } from "react-icons/md";
 
 function App() {
   const [text, setText] = useState("");
@@ -8,6 +15,7 @@ function App() {
   const [currentTitle, setCurrentTitle] = useState(null);
   const [isResponseLoading, setIsResponseLoading] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [isShowSidebar, setIsShowSidebar] = useState(false);
   const scrollToLastItem = useRef(null);
 
   const createNewChat = () => {
@@ -21,6 +29,10 @@ function App() {
     setMessage(null);
     setText("");
   };
+
+  const toggleSidebar = useCallback(() => {
+    setIsShowSidebar((prev) => !prev);
+  }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -77,6 +89,19 @@ function App() {
     }
   };
 
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      setIsShowSidebar(window.innerWidth <= 640);
+    };
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     if (!currentTitle && text && message) {
       setCurrentTitle(text);
@@ -110,7 +135,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <section className="sidebar">
+        <section className={`sidebar ${isShowSidebar ? "open" : ""}`}>
           <div className="sidebar-header" onClick={createNewChat} role="button">
             <BiPlus size={20} />
             <button>New Chat</button>
@@ -168,6 +193,20 @@ function App() {
               <h1>Chat GPT Clone</h1>
               <h3>How can I help you today?</h3>
             </div>
+          )}
+
+          {isShowSidebar ? (
+            <MdOutlineArrowRight
+              className="burger"
+              size={28.8}
+              onClick={toggleSidebar}
+            />
+          ) : (
+            <MdOutlineArrowLeft
+              className="burger"
+              size={28.8}
+              onClick={toggleSidebar}
+            />
           )}
           <div className="main-header">
             <ul>

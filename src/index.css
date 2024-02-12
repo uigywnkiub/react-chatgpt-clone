@@ -34,6 +34,14 @@ button {
   background-color: #343541;
 }
 
+.burger {
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  fill: #ececf1;
+  cursor: pointer;
+}
+
 .sidebar {
   width: 16rem;
   padding: 1rem;
@@ -44,6 +52,15 @@ button {
   justify-content: space-between;
   background-color: rgb(32, 33, 35, 1);
   overflow: auto;
+  transition: all 0.3s ease;
+}
+
+.sidebar.open {
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  box-shadow: 0px 0px 10px #ececf1;
+  filter: blur(10px);
 }
 
 .sidebar-header {
@@ -135,6 +152,8 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .main h1 {
@@ -171,7 +190,7 @@ button {
 .main-header img:not(:nth-child(even)) {
   display: block;
   border-radius: 0.3rem;
-  width: 1.8re;
+  width: 1.8rem;
   height: 1.8rem;
 }
 
@@ -264,14 +283,6 @@ button {
 }
 
 @media screen and (max-width: 640px) {
-  .sidebar {
-    display: none;
-  }
-
-  .container {
-    display: block;
-  }
-
   .main-header li {
     gap: 1rem;
   }
