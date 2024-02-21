@@ -185,16 +185,7 @@ function App() {
             )}
             {localUniqueTitles.length > 0 && localChats.length !== 0 && (
               <>
-                <p>
-                  Previous
-                  <br />
-                  <sub
-                    className="clear-previous-btn"
-                    onClick={() => localStorage.clear()}
-                  >
-                    Clear
-                  </sub>
-                </p>
+                <p>Previous</p>
                 <ul>
                   {localUniqueTitles?.map((uniqueTitle, idx) => {
                     const listItems = document.querySelectorAll("li");
@@ -221,13 +212,7 @@ function App() {
           <div className="sidebar-info">
             <div className="sidebar-info-upgrade">
               <BiUser size={20} />
-              <p>
-                Upgrade plan
-                <br />
-                <span className="sidebar-info-upgrade-subtext">
-                  Get GPT-4, DALL·E, and more
-                </span>
-              </p>
+              <p>Upgrade plan</p>
             </div>
             <div className="sidebar-info-user">
               <BiSolidUserCircle size={20} />

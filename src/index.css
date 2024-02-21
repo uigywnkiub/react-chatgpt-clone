@@ -136,11 +136,6 @@ button {
   padding: 0.5rem;
 }
 
-.sidebar-info-upgrade-subtext {
-  font-size: 0.75rem;
-  color: #8e8fa1;
-}
-
 .sidebar li:hover,
 .sidebar-info-upgrade:hover,
 .sidebar-info-user:hover {
@@ -152,13 +147,6 @@ button {
 .sidebar-info-upgrade:hover,
 .sidebar-info-user:hover {
   cursor: not-allowed;
-}
-
-.clear-previous-btn {
-  background-color: rgba(185, 28, 28, 0.7);
-  padding: 0.1rem 0.2rem;
-  border-radius: 0.3rem;
-  cursor: pointer;
 }
 
 .main {
