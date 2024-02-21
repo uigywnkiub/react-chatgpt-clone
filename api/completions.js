@@ -13,6 +13,10 @@ const ratelimit = new Ratelimit({
   prefix: "@upstash/ratelimit",
 });
 
+export const config = {
+  runtime: "edge",
+};
+
 export default async function handler(req, res) {
   try {
     const ip =
