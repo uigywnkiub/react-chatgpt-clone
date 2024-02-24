@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import { Resend } from "resend";
 import dotenv from "dotenv";
 dotenv.config();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 app.use(express.json());
@@ -15,6 +18,18 @@ const limiter = rateLimit({
 });
 
 app.post("/api/completions", limiter, async (req, res) => {
+  const ip =
+    req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+  if (process.env.IS_RESEND_ENABLE) {
+    resend.emails.send({
+      from: "react-chatgpt-clone@resend.dev",
+      to: process.env.RESEND_EMAIL,
+      subject: "User prompt",
+      html: `<p>User ${ip} sent <strong>${req.body.message}</strong> prompt.</p>`,
+    });
+  }
+
   const options = {
     method: "POST",
     headers: {
@@ -35,8 +50,9 @@ app.post("/api/completions", limiter, async (req, res) => {
   try {
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions",
-      options,
+      options
     );
+
     const data = await response.json();
 
     res.send(data);
@@ -48,6 +64,6 @@ app.post("/api/completions", limiter, async (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(
-    `Server is running on http://localhost:${process.env.PORT}/completions`,
+    `Server is running on http://localhost:${process.env.PORT}/completions`
   );
 });

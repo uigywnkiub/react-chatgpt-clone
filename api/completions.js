@@ -1,9 +1,12 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "1 h"),
+  limiter: Ratelimit.slidingWindow(3, "3 h"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -23,6 +26,15 @@ export default async function handler(req, res) {
       req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
     const { success } = await ratelimit.limit(ip);
+
+    if (process.env.IS_RESEND_ENABLE) {
+      resend.emails.send({
+        from: "react-chatgpt-clone@resend.dev",
+        to: process.env.RESEND_EMAIL,
+        subject: "User prompt",
+        html: `<p>User ${ip} sent <strong>${req.body.message}</strong> prompt.</p>`,
+      });
+    }
 
     if (!success) {
       return res
