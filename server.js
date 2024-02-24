@@ -21,7 +21,7 @@ app.post("/api/completions", limiter, async (req, res) => {
   const ip =
     req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-  if (process.env.IS_RESEND_ENABLE) {
+  if (process.env.IS_RESEND_ENABLE === "true") {
     resend.emails.send({
       from: "react-chatgpt-clone@resend.dev",
       to: process.env.RESEND_EMAIL,

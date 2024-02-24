@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
     const { success } = await ratelimit.limit(ip);
 
-    if (process.env.IS_RESEND_ENABLE) {
+    if (process.env.IS_RESEND_ENABLE === "true") {
       resend.emails.send({
         from: "react-chatgpt-clone@resend.dev",
         to: process.env.RESEND_EMAIL,
