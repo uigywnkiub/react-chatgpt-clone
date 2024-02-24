@@ -16,9 +16,9 @@ const ratelimit = new Ratelimit({
   prefix: "@upstash/ratelimit",
 });
 
-// export const config = {
-//   runtime: "edge",
-// };
+export const config = {
+  runtime: "edge",
+};
 
 export default async function handler(req, res) {
   try {
@@ -27,6 +27,12 @@ export default async function handler(req, res) {
 
     const { success } = await ratelimit.limit(ip);
 
+    if (!success) {
+      return res
+        .status(429)
+        .send("You have reached the maximum number of requests per hour.");
+    }
+
     if (process.env.IS_RESEND_ENABLE === "true") {
       resend.emails.send({
         from: "react-chatgpt-clone@resend.dev",
@@ -34,12 +40,6 @@ export default async function handler(req, res) {
         subject: "User prompt",
         html: `<p>User ${ip} sent <strong>${req.body.message}</strong> prompt.</p>`,
       });
-    }
-
-    if (!success) {
-      return res
-        .status(429)
-        .send("You have reached the maximum number of requests per hour.");
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
