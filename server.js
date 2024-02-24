@@ -17,7 +17,14 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
 });
 
-app.post("/api/completions", limiter, async (req, res) => {
+const auth = (req, res, next) => {
+  if (req.headers.authorization !== process.env.VITE_AUTH_TOKEN) {
+    return res.status(401).send("Unauthorized");
+  }
+  next();
+};
+
+app.post("/api/completions", auth, limiter, async (req, res) => {
   const ip =
     req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
@@ -64,6 +71,6 @@ app.post("/api/completions", limiter, async (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(
-    `Server is running on http://localhost:${process.env.PORT}/completions`
+    `Server is running on http://localhost:${process.env.PORT}/api/completions`
   );
 });

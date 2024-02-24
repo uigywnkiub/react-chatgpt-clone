@@ -13,15 +13,22 @@ const ratelimit = new Ratelimit({
    * instance with other applications and want to avoid key collisions. The default prefix is
    * "@upstash/ratelimit"
    */
-  prefix: "@upstash/ratelimit",
+  prefix: "@gpt-clone/ratelimit",
 });
 
-// export const config = {
-//   runtime: "edge",
-// };
+const auth = (req, res, next) => {
+  if (req.headers.authorization !== process.env.VITE_AUTH_TOKEN) {
+    return res.status(401).send("Unauthorized");
+  }
+  next();
+};
 
 export default async function handler(req, res) {
   try {
+    if (req.headers.authorization !== process.env.AUTH_TOKEN) {
+      return res.status(401).send("Unauthorized");
+    }
+
     const ip =
       req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
