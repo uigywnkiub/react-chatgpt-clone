@@ -45,6 +45,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": import.meta.env.VITE_AUTH_TOKEN,
       },
       body: JSON.stringify({
         message: text,
@@ -54,7 +55,7 @@ function App() {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/completions`,
-        options,
+        options
       );
 
       if (response.status === 429) {
@@ -138,15 +139,15 @@ function App() {
   }, [message, currentTitle]);
 
   const currentChat = (localChats || previousChats).filter(
-    (prevChat) => prevChat.title === currentTitle,
+    (prevChat) => prevChat.title === currentTitle
   );
 
   const uniqueTitles = Array.from(
-    new Set(previousChats.map((prevChat) => prevChat.title).reverse()),
+    new Set(previousChats.map((prevChat) => prevChat.title).reverse())
   );
 
   const localUniqueTitles = Array.from(
-    new Set(localChats.map((prevChat) => prevChat.title).reverse()),
+    new Set(localChats.map((prevChat) => prevChat.title).reverse())
   ).filter((title) => !uniqueTitles.includes(title));
 
   return (
