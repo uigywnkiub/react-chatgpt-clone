@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "3 h"),
+  limiter: Ratelimit.slidingWindow(1, "1 d"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis
@@ -15,13 +15,6 @@ const ratelimit = new Ratelimit({
    */
   prefix: "@gpt-clone/ratelimit",
 });
-
-const auth = (req, res, next) => {
-  if (req.headers.authorization !== process.env.VITE_AUTH_TOKEN) {
-    return res.status(401).send("Unauthorized");
-  }
-  next();
-};
 
 export default async function handler(req, res) {
   try {
