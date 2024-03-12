@@ -40,6 +40,7 @@ function App() {
     if (!text) return;
 
     setIsResponseLoading(true);
+    setErrorText("");
 
     const options = {
       method: "POST",

@@ -60,8 +60,8 @@ button {
   width: 0;
   padding: 0;
   opacity: 0;
-  box-shadow: 0px 0px 10px #ececf1;
-  filter: blur(10px);
+  box-shadow: 0px 0px 14px #ececf1;
+  filter: blur(14px);
 }
 
 .sidebar-header {
@@ -112,12 +112,10 @@ button {
   padding: 0 5px;
   left: calc(100% - 50px);
   border-radius: 0.3rem;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    #202123 100%,
-    rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(to right,
+      rgba(0, 0, 0, 0),
+      #202123 100%,
+      rgba(0, 0, 0, 0));
   pointer-events: none;
   z-index: 1;
 }
@@ -238,6 +236,7 @@ button {
 .form-container {
   width: 50rem;
   padding: 0.3rem 1.6rem;
+  margin: 0 auto;
   border-radius: 0.3rem;
   display: flex;
   align-items: center;
